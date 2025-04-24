@@ -1,9 +1,38 @@
-import React from "react";
+import axios from "axios";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { Button, Container, Divider, Form, Icon } from 'semantic-ui-react';
 import MenuSistema from '../../MenuSistema';
 
 export default function FormProduto () {
+
+	const [codigo, setCodigo] = useState();
+	const [titulo, setTitulo] = useState();
+	const [descricao, setDescricao] = useState();
+	const [valorUnitario, setValorUnitario] = useState();
+	const [tempoEntregaMinimo, setTempoEntregaMinimo] = useState();
+	const [tempoEntregaMaximo, setTempoEntregaMaximo] = useState();
+
+	function salvar() {
+
+		let produtoRequest = {
+
+			codigo: codigo,
+			titulo: titulo,
+			descricao: descricao,
+			valorUnitario: valorUnitario,
+			tempoEntregaMinimo: tempoEntregaMinimo,
+			tempoEntregaMaximo: tempoEntregaMaximo
+		}
+
+		axios.post("http://localhost:8087/api/produto", produtoRequest)
+		.then((response) => { 
+			console.log('Produto cadastrado com sucesso.') 
+		})
+		.catch((error) => { 
+			console.log('Erro ao incluir o produto.') 
+		})
+	}
 
 	return(
 		<div>
@@ -31,6 +60,8 @@ export default function FormProduto () {
 									width={12}
 									tabIndex='1'
 									maxLength="300"
+									value={titulo}
+									onChange={e => setTitulo(e.target.value)}
 								/>
 
 								<Form.Input
@@ -41,6 +72,8 @@ export default function FormProduto () {
 									width={5}
 									tabIndex='2'
 									maxLength='10'
+									value={codigo}
+									onChange={e => setCodigo(e.target.value)}
 								/>
 
 							</Form.Group>
@@ -48,8 +81,9 @@ export default function FormProduto () {
 							<Form.TextArea
 								label='Descrição'
 								placeholder='Informe a descrição do produto'
-								tabIndex='4'
 								maxLength="100000"
+								value={descricao}
+								onChange={e => setDescricao(e.target.value)}
 							/>
 
 							<Form.Group>
@@ -61,6 +95,8 @@ export default function FormProduto () {
 									tabIndex='5'
 									name='valorUnitario'
 									width={6}
+									value={valorUnitario}
+									onChange={e => setValorUnitario(e.target.value)}
 								/>
 								
 								<Form.Input
@@ -70,6 +106,8 @@ export default function FormProduto () {
 									width={5}
 									tabIndex='6'
 									maxLength="3"
+									value={tempoEntregaMinimo}
+									onChange={e => setTempoEntregaMinimo(e.target.value)}
 								/>
 								
 								<Form.Input
@@ -79,6 +117,8 @@ export default function FormProduto () {
 									width={5}
 									tabIndex='7'
 									maxLength="3"
+									value={tempoEntregaMaximo}
+									onChange={e => setTempoEntregaMaximo(e.target.value)}
 								/>
 							</Form.Group>
 
@@ -101,6 +141,7 @@ export default function FormProduto () {
 									color='blue'
 									icon='save'
 									floated='right'
+									onClick={() => salvar()}
 								/>
 
 							</Form.Group>
